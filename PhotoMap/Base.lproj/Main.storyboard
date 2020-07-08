@@ -16,20 +16,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="camera-l-1" translatesAutoresizingMaskIntoConstraints="NO" id="BuS-vw-lur">
-                                <rect key="frame" x="150" y="558" width="74" height="81"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="oJV-G0-XVc">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x6V-Pd-3Ur">
+                                <rect key="frame" x="169" y="585" width="36" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="camera">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
+                                </state>
+                                <connections>
+                                    <action selector="clickCamera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pYu-Zb-Cq6"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="p1y-Ku-BJR"/>
                     <connections>
+                        <outlet property="cameraButton" destination="x6V-Pd-3Ur" id="k9f-5r-zL6"/>
                         <outlet property="mapview" destination="oJV-G0-XVc" id="iMU-t4-THo"/>
                         <segue destination="dhm-cj-dCe" kind="show" identifier="fullImageSegue" id="j47-0S-4ot"/>
                         <segue destination="Fvc-Fc-ega" kind="show" identifier="tagSegue" id="wtL-Hs-mhM"/>
@@ -157,6 +164,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="camera-l-1" width="30" height="30"/>
+        <image name="camera" width="30" height="30"/>
     </resources>
 </document>
