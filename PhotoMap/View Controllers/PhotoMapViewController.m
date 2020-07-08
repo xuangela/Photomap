@@ -6,11 +6,13 @@
 //  Copyright © 2018 Codepath. All rights reserved.
 //
 
+// TODO: extra features and bonus
+
 #import "PhotoMapViewController.h"
 #import "LocationsViewController.h"
 #import <MapKit/MapKit.h>
 
-@interface PhotoMapViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, LocationsViewControllerDelegate>
+@interface PhotoMapViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate,LocationsViewControllerDelegate, MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapview;
 @property (weak, nonatomic) IBOutlet UIButton *cameraButton;
@@ -24,6 +26,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.mapview.delegate = self;
 
     //setting map view to LA
     MKCoordinateRegion sfRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake(37.783333, -122.416667), MKCoordinateSpanMake(0.1, 0.1));
@@ -54,7 +58,33 @@
 - (void)locationsViewController:(LocationsViewController *)controller didPickLocationWithLatitude:(NSNumber *)latitude longitude:(NSNumber *)longitude{
     MKCoordinateRegion selectedRegion = MKCoordinateRegionMake(CLLocationCoordinate2DMake([latitude doubleValue], [longitude doubleValue]), MKCoordinateSpanMake(0.1, 0.1));
     [self.mapview setRegion:selectedRegion animated:false];
+    
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude.floatValue, longitude.floatValue);
+    
+    // add pin
+    MKPointAnnotation *annotation = [MKPointAnnotation new];
+    annotation.coordinate = coordinate;
+    annotation.title = @"Picture!";
+    [self.mapview addAnnotation:annotation];
+    
+    // add image to pin
+    [self mapView:self.mapview viewForAnnotation:annotation];
+    
     [self.navigationController popToViewController:self animated:YES];
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    MKPinAnnotationView *annotationView = (MKPinAnnotationView*)[mapView dequeueReusableAnnotationViewWithIdentifier:@"Pin"];
+    if (annotationView == nil) {
+        annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Pin"];
+        annotationView.canShowCallout = true;
+        annotationView.leftCalloutAccessoryView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 50.0, 50.0)];
+    }
+
+    UIImageView *imageView = (UIImageView*)annotationView.leftCalloutAccessoryView;
+    imageView.image = self.picture;
+
+    return annotationView;
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
